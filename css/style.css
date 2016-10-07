@@ -193,28 +193,29 @@ display:inline-block;
   border: 0;
   }
 .banner-info {
-    width: 59%;
+    width: 30%;
     position: absolute;
-    top: 37%;
-    left: 20%;
+    top: 13%;
+    right: 10%;
     text-align: center;
     z-index: 1;
+    background-color: #ed645c;
 }
 .banner-info h3{
-	color: #FFF;
+	color:#fff;
 	font-weight: 700;
-	font-size:3em;
+	font-size:2em;
 	text-transform: uppercase;
 	    z-index: 999;
 }
 .banner-info p{
-	color: #FFF;
+	color:#fff;
 	line-height: 1.5em;
 	font-size: 1.2em;
 	width:70%;
 	margin:0 auto;
 	text-align: center;
-	padding:1em 0 1.5em 0;
+	padding:1em 0 2.5em 0;
 }
 .callbacks_container {
   position: relative;
@@ -2167,7 +2168,10 @@ ul.place li.sort {
 span.item_price {    
     margin: 6px 0 0px;
 }
+.rebate-map ul {
+	padding: 1em 1em 1em 1em;
 }
+
 @media (max-width: 600px){
 .top-nav {
     width: 35%;

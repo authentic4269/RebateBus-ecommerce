@@ -13,16 +13,13 @@
 
 var API_KEY = "VmOJXmww6eBGT3XW";
 var UID = 1;
-var products = [
-	1001, 1012, 1013, 1010, 1011, 1009, 1008	
-];
 var bus = {
  downstream: {},
  midstream: {},
  utilityDict: {}
 };
 
-function getUtilities(callback) {
+function getUtilities() {
 	$.ajax({
 		type: "POST",
 		url: "https://www.rebatebus.com/api/getutilities",
@@ -30,7 +27,7 @@ function getUtilities(callback) {
 		crossDomain: true,
 		complete: function(response, stat) {
 			bus.utilityDict = JSON.parse(response.responseText);
-			getRebates(callback);
+			getRebates();
 		}, error: function(response, stat) {
 			console.log("error retrieving utilities data from Rebate Bus");
 		}
@@ -38,7 +35,7 @@ function getUtilities(callback) {
 
 }
 
-function getRebates(callback) {
+function getRebates() {
         $.ajax({
                 type: "POST",
                 url: "https://www.rebatebus.com/api/getrebates",
@@ -48,9 +45,7 @@ function getRebates(callback) {
                         var rebates = JSON.parse(response.responseText);
 			bus.downstream = rebates.downstream;
 			bus.midstream = rebates.midstream;
-			callback();
 			localizeRebateOffers();
-			rebatemap(bus, 1008, 'map');
                 }, error: function(response, stat) {
                         console.log("error retrieving rebates data from Rebate Bus");
                 }
@@ -115,6 +110,8 @@ function setProgramRebates(closestProgram) {
 	var maxIncentive;
 	for (j = 0; j < bus.downstream.length; j++) {
 		curProduct = bus.downstream[j];
+
+		rebatemap(bus, curProduct.productid, curProduct.productid + 'map');
 		found = 0;
 		maxIncentive = {"rebateAmount": -1};
 		// Look for a prescriptive incentive, then a custom. 
@@ -141,7 +138,7 @@ function setProgramRebates(closestProgram) {
 }
 
 /*
- * We've found a rebate that applies to productid in the program we're localizing to - update to DOM to reflect the discount
+ * We've found a rebate that applies to productid in the program we're localizing to - update the DOM to reflect the discount
  */
 function updateRebatePriceQuotes(productid, incentive) {
 	$("#" + productid + " .pric1").append("<del>$" + incentive.msrp + "</del>");

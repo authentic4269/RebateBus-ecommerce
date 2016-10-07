@@ -13,7 +13,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- Custom Theme files -->
 <!--theme style-->
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />	
-<script src="js/jquery.min.js"></script>
+<script src="js/jquery-1.7.js"></script>
 <!--//theme style-->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -22,6 +22,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- start menu -->
 <script src="js/simpleCart.min.js"> </script>
+<script src="js/raphael.js"></script>
+<script>
+
+var products = [
+	1011
+];
+</script>
+<script src="js/rebatemap.js"></script>
 <script src="js/rebatebus.js"></script>
 <!-- start menu -->
 <link href="css/memenu.css" rel="stylesheet" type="text/css" media="all" />
@@ -181,16 +189,25 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 				 </div>	
 			     <div class="col-md-5 single-top-in simpleCart_shelfItem">
-					  <div class="single-para ">
+					  <div id="1011" class="single-para ">
 						 <h4>CR22-32L-35K-XX</h4>
-							<h5 class="item_price">$ 200.00</h5>							
-							<p class="para">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, Vivamus porttitor tincidunt elementum nisi a, euismod rhoncus urna. Curabitur scelerisque vulputate diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat </p>
+						<h5 class="item_price pric1">
+							 <span class="disc"></span>
+							 <span class="pric2"></span>
+					 	</h5>							
+		
+					
+						<p>
+						</p>
+
+							<p class="para">CR22 Series Troffers by Cree are an excellent option for illuminating your offices and other spaces. Save energy and take advantage of rebates by upgrading today.</p>
+
 							<div class="prdt-info-grid">
 								 <ul>
-									 <li>- Brand : Fos Lighting</li>
-									 <li>- Dimensions : (LXBXH) in cms of...</li>
-									 <li>- Color : Brown</li>
-									 <li>- Material : Wood</li>
+									 <li>- Brand : Cree</li>
+									 <li>- Dimensions : 2X2</li>
+									 <li>- Color : White</li>
+									 <li>- Temperature: 3000 K</li>
 								 </ul>
 							</div>
 							<div class="check">
@@ -208,6 +225,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				 <div class="clearfix"> </div>
 			 </div>
 	     </div>
+		<div style="width: 500px; height: 900px;" class="rebate-map">
+			<div style="width: 100%; height: 80%;"  id="1011map"></div>
+		</div>
 		 <div class="bottom-prdt">
 			 <div class="btm-grid-sec">
 				 <div class="col-md-2 btm-grid">
