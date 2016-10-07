@@ -157,6 +157,13 @@ display:inline-block;
 	background-size:cover;
 	min-height:585px;
 }
+.banner4{
+	background:url(../images/bnr4.jpg) no-repeat 0px 0px;
+	background-size:cover;
+	min-height:585px;
+}
+
+
 .rslides {
   position: relative;
   list-style: none;
