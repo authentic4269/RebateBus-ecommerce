@@ -22,7 +22,7 @@ var bus = {
  utilityDict: {}
 };
 
-function getUtilities() {
+function getUtilities(callback) {
 	$.ajax({
 		type: "POST",
 		url: "https://www.rebatebus.com/api/getutilities",
@@ -30,7 +30,7 @@ function getUtilities() {
 		crossDomain: true,
 		complete: function(response, stat) {
 			bus.utilityDict = JSON.parse(response.responseText);
-			getRebates();
+			getRebates(callback);
 		}, error: function(response, stat) {
 			console.log("error retrieving utilities data from Rebate Bus");
 		}
@@ -38,7 +38,7 @@ function getUtilities() {
 
 }
 
-function getRebates() {
+function getRebates(callback) {
         $.ajax({
                 type: "POST",
                 url: "https://www.rebatebus.com/api/getrebates",
@@ -48,7 +48,9 @@ function getRebates() {
                         var rebates = JSON.parse(response.responseText);
 			bus.downstream = rebates.downstream;
 			bus.midstream = rebates.midstream;
+			callback();
 			localizeRebateOffers();
+			rebatemap(bus, 1008, 'map');
                 }, error: function(response, stat) {
                         console.log("error retrieving rebates data from Rebate Bus");
                 }

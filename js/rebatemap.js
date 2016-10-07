@@ -1,3 +1,166 @@
+// Begin state definitions
+var abbrv_states = {
+
+    "AL": "Alabama",
+    "AK": "Alaska",
+    "AS": "American Samoa",
+    "AZ": "Arizona",
+    "AR": "Arkansas",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DE": "Delaware",
+    "DC": "District Of Columbia",
+    "FM": "Federated States Of Micronesia",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "GU": "Guam",
+    "HI": "Hawaii",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "IA": "Iowa",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "ME": "Maine",
+    "MH": "Marshall Islands",
+    "MD": "Maryland",
+    "MA": "Massachusetts",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MS": "Mississippi",
+    "MO": "Missouri",
+    "MT": "Montana",
+    "NE": "Nebraska",
+    "NV": "Nevada",
+    "NH": "New Hampshire",
+    "NJ": "New Jersey",
+    "NM": "New Mexico",
+    "NY": "New York",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "MP": "Northern Mariana Islands",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PW": "Palau",
+    "PA": "Pennsylvania",
+    "PR": "Puerto Rico",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VT": "Vermont",
+    "VI": "Virgin Islands",
+    "VA": "Virginia",
+    "WA": "Washington",
+    "WV": "West Virginia",
+    "WI": "Wisconsin",
+    "WY": "Wyoming",
+
+    "YT" : "Yukon",
+    "BC": "British Columbia",
+    "AB": "Alberta",
+    "ON": "Ontario",
+    "SK": "Saskatchewan",
+    "NL": "Newfoundland and Labrador",
+    "NU": "Nunavut",
+    "NS": "Nova Scotia",
+    "NT": "Northwest Territories",
+    "QC": "Quebec",
+    "PE": "Prince Edward Island",
+    "NB": "New Brunswick",
+    "MB": "Manitoba",
+    "QC": "Quebec"
+};
+
+var states = {
+    'Alabama': 'AL',
+    'Alaska': 'AK',
+    'American Samoa': 'AS',
+    'Arizona': 'AZ',
+    'Arkansas': 'AR',
+    'California': 'CA',
+    'Colorado': 'CO',
+    'Connecticut': 'CT',
+    'Delaware': 'DE',
+    'District Of Columbia': 'DC',
+    'Federated States Of Micronesia': 'FM',
+    'Florida': 'FL',
+    'Georgia': 'GA',
+    'Guam': 'GU',
+    'Hawaii': 'HI',
+    'Idaho': 'ID',
+    'Illinois': 'IL',
+    'Indiana': 'IN',
+    'Iowa': 'IA',
+    'Kansas': 'KS',
+    'Kentucky': 'KY',
+    'Louisiana': 'LA',
+    'Maine': 'ME',
+    'Marshall Islands': 'MH',
+    'Maryland': 'MD',
+    'Massachusetts': 'MA',
+    'Michigan': 'MI',
+    'Minnesota': 'MN',
+    'Mississippi': 'MS',
+    'Missouri': 'MO',
+    'Montana': 'MT',
+    'Nebraska': 'NE',
+    'Nevada': 'NV',
+    'New Hampshire': 'NH',
+    'New Jersey': 'NJ',
+    'New Mexico': 'NM',
+    'New York': 'NY',
+    'North Carolina': 'NC',
+    'North Dakota': 'ND',
+    'Northern Mariana Islands': 'MP',
+    'Ohio': 'OH',
+    'Oklahoma': 'OK',
+    'Oregon': 'OR',
+    'Palau': 'PW',
+    'Pennsylvania': 'PA',
+    'Puerto Rico': 'PR',
+    'Rhode Island': 'RI',
+    'South Carolina': 'SC',
+    'South Dakota': 'SD',
+    'Tennessee': 'TN',
+    'Texas': 'TX',
+    'Utah': 'UT',
+    'Vermont': 'VT',
+    'Virgin Islands': 'VI',
+    'Virginia': 'VA',
+    'Washington': 'WA',
+    'West Virginia': 'WV',
+    'Wisconsin': 'WI',
+    'Wyoming': 'WY',
+	
+    "Yukon": "YT",
+    "British Columbia": "BC",
+    "Alberta": "AB",
+    "Ontario": "ON",
+    "Saskatchewan": "SK",
+    "Newfoundland": "NL",
+    "Newfoundland and Labrador": "NL",
+    "Nunavut": "NU",
+    "Nova Scotia": "NS",
+    "Northwest Territories": "NT",
+    "Quebec": "QC",
+    "Prince Edward Island": "PE",
+    "New Brunswick": "NB",
+    "Mantioba": "MB"
+
+  }; 
+
+
+// End state definitions
+//
+// Begin Raphael and SVG stuff
+
+
 (function($, document, window, Raphael, undefined) {
   // jQuery Plugin Factory
   function jQueryPluginFactory( $, name, methods, getters ){
@@ -653,3 +816,79 @@
   jQueryPluginFactory($, 'usmap', methods, getters);
 
 })(jQuery, document, window, Raphael);
+
+// End Raphael and SVG stuff, begin rebate calcs and map setup
+
+
+var rebatemap = function(bus, productid, id) {
+	var i, j, k;
+	var gradient = ["#FFFFFF", "#FFDFDF", "#FFBFBF", "#FF9F9F", "#FF7F7F", "#FF5F5F", "#FF3F3F", "#FF1F1F", "#FF0000", "#CC0000", "#990000"];
+	var gradientPicker;
+	var rebates;
+	var maxRebate;
+	var curProgramId, curUtility, curMax, curAbbrv;
+	var stateMatches = {};
+	var stateStyles = {};
+	var programStates = {};
+	for (curAbbrv in abbrv_states) {
+		stateMatches[curAbbrv] = [];
+	}
+	for (curProgramId in bus.utilityDict) {
+		programStates[curProgramId] = [];
+		for (i = 0; i < bus.utilityDict[curProgramId].length; i++)
+		{
+			curUtility = bus.utilityDict[curProgramId][i];
+			if (programStates[curProgramId].indexOf(curUtility.state) < 0) 
+				programStates[curProgramId].push(curUtility.state);
+		}
+	}
+
+	for (k = 0; k < bus.downstream.length; k++) {
+		if (bus.downstream[k].productid == productid) {
+			rebates = bus.downstream[k].rebates;
+			maxRebate = -1;
+			for (i = 0; i < rebates.custom.length; i++) {
+				// shouldn't have to parse floats manually, but the JSON parser doesn't always
+				// recognize that rebateAmount is a number. this messes up comparisons.
+				rebates.custom[i].rebateAmount = parseFloat(rebates.custom[i].rebateAmount);
+				if (rebates.custom[i].rebateAmount > maxRebate) {
+					maxRebate = rebates.custom[i].rebateAmount;
+				}
+				for (j = 0; j < programStates[rebates.custom[i].programid].length; j++) {
+					stateMatches[states[programStates[rebates.custom[i].programid][j].trim()]].push(rebates.custom[i]);		
+				}
+			}
+			for (i = 0; i < rebates.prescriptive.length; i++) {
+				rebates.prescriptive[i].rebateAmount = parseFloat(rebates.prescriptive[i].rebateAmount);
+				if (rebates.prescriptive[i].rebateAmount > maxRebate) {
+					maxRebate = rebates.prescriptive[i].rebateAmount;
+				}
+				for (j = 0; j < programStates[rebates.prescriptive[i].programid].length; j++) {
+					stateMatches[states[programStates[rebates.prescriptive[i].programid][j].trim()]].push(rebates.prescriptive[i]);		
+				}
+			}
+			for (curAbbrv in abbrv_states) {
+				curMax = -1;
+				for (i = 0; i < stateMatches[curAbbrv].length; i++) {
+					if (stateMatches[curAbbrv][i].rebateAmount > curMax) {
+						curMax = stateMatches[curAbbrv][i].rebateAmount;
+					}
+				}		
+				if (curMax > 0) {
+					gradientPicker = Math.floor((curMax / maxRebate) * (gradient.length-1));				
+					stateStyles[curAbbrv] = {"fill": gradient[gradientPicker]};
+				}
+				else {
+					stateStyles[curAbbrv] = {"fill": gradient[0]};
+				}
+			}
+			$("#" + id).usmap({
+				stateSpecificStyles: stateStyles,
+				labelBackingStyles: {'fill': '#FFFFFF'},
+                                labelTextStyles: {'stroke': '#000000', 'font-size': '10px'},
+                                showLabels: true
+			});
+			break;	
+		}
+	}
+}
