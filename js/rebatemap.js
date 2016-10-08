@@ -886,7 +886,10 @@ var rebatemap = function(bus, productid, id) {
 				stateSpecificStyles: stateStyles,
 				labelBackingStyles: {'fill': '#FFFFFF'},
                                 labelTextStyles: {'stroke': '#000000', 'font-size': '10px'},
-                                showLabels: true
+                                showLabels: true,
+				click: function(event, data) {
+
+				}
 			});
 			break;	
 		}
