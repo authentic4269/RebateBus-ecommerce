@@ -1,3 +1,10 @@
+// Rebate Bus Map JS
+// State definitions at the beginning, Raphael and SVG in the middle, rebatemap and Rebate Bus
+// functionality at the end. 
+// @author mitchvogel, 10/11/2016
+
+
+
 // Begin state definitions
 var abbrv_states = {
 
