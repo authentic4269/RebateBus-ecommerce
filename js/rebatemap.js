@@ -820,7 +820,7 @@ var states = {
 // End Raphael and SVG stuff, begin rebate calcs and map setup
 
 
-var rebatemap = function(bus, productid, id) {
+var rebatemap = function(utilityDict, rebates, productid, id) {
 	var i, j, k;
 	var gradient = ["#FFFFFF", "#FFDFDF", "#FFBFBF", "#FF9F9F", "#FF7F7F", "#FF5F5F", "#FF3F3F", "#FF1F1F", "#FF0000", "#CC0000", "#990000"];
 	var gradientPicker;
@@ -833,19 +833,19 @@ var rebatemap = function(bus, productid, id) {
 	for (curAbbrv in abbrv_states) {
 		stateMatches[curAbbrv] = [];
 	}
-	for (curProgramId in bus.utilityDict) {
+	for (curProgramId in utilityDict) {
 		programStates[curProgramId] = [];
-		for (i = 0; i < bus.utilityDict[curProgramId].length; i++)
+		for (i = 0; i < utilityDict[curProgramId].length; i++)
 		{
-			curUtility = bus.utilityDict[curProgramId][i];
+			curUtility = utilityDict[curProgramId][i];
 			if (programStates[curProgramId].indexOf(curUtility.state) < 0) 
 				programStates[curProgramId].push(curUtility.state);
 		}
 	}
 
-	for (k = 0; k < bus.downstream.length; k++) {
-		if (bus.downstream[k].productid == productid) {
-			rebates = bus.downstream[k].rebates;
+	for (k = 0; k < rebates.length; k++) {
+		if (rebates[k].productid == productid) {
+			rebates = rebates[k].rebates;
 			maxRebate = -1;
 			for (i = 0; i < rebates.custom.length; i++) {
 				// shouldn't have to parse floats manually, but the JSON parser doesn't always

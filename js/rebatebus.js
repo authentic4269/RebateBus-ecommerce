@@ -111,7 +111,7 @@ function setProgramRebates(closestProgram) {
 	for (j = 0; j < bus.downstream.length; j++) {
 		curProduct = bus.downstream[j];
 
-		rebatemap(bus, curProduct.productid, curProduct.productid + 'map');
+		rebatemap({'utilityDict': bus.utilityDict, 'rebates': bus.downstream}, curProduct.productid, curProduct.productid + 'map');
 		found = 0;
 		maxIncentive = {"rebateAmount": -1};
 		// Look for a prescriptive incentive, then a custom. 
