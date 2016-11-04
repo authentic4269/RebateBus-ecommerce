@@ -143,7 +143,7 @@ function setProgramRebates(closestProgram) {
 function updateRebatePriceQuotes(productid, incentive) {
 	$("#" + productid + " .pric1").append("<del>$" + incentive.msrp + "</del>");
 	$("#" + productid + " .pric2").text("$" + (incentive.msrp - incentive.rebateAmount).toFixed(2));
-	$("#" + productid + " .disc").text("$" + incentive.rebateAmount + " rebate from " + incentive.program);
+	$("#" + productid + " .disc").text("$" + incentive.rebateAmount.toFixed(2) + " rebate from " + incentive.program);
 }
 
 function getLocation() {
