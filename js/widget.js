@@ -25,10 +25,12 @@ var closeMidstreamFrame = function() {
 		document.body.removeChild(ifrm);
 }
 
-var getBusFn = function(callback) {
+var getBusFn = function(ifrm, callback) {
 	return function(event) {
 		if (event.data.type == "removebusfrm") {
 			closeMidstreamFrame();
+		} if (event.data.type == "foundrebate") {
+			ifrm.setAttribute('src', "midstreamwidget?rebate=" + event.data.rebate + "&zip=" + event.data.zip + "&product=" + event.data.product + "&apikey=" + event.data.apikey + "&uid=" + event.data.uid + "&propertytype=" + event.data.propertytype);
 		} else if (event.data.type == "verified") {
 			callback(event.data.verification, event.data.amount, event.data.maxqty);	
 		}
@@ -38,9 +40,9 @@ var getBusFn = function(callback) {
 var MidstreamWidget = { 
 
 	"configure": function(options) {
-		if (!options.rebateid || !options.productid || !options.apikey || !options.uid) {
+		if (!options.productid || !options.apikey || !options.uid) {
 			alert("Missing parameters in MidstreamWidget request");
-			return;		
+			return;	
 		}
 		var ifrm = document.createElement('iframe');
 		var container = document.createElement('div');
@@ -50,13 +52,18 @@ var MidstreamWidget = {
 			server = options.server;	
 		}
 		ifrm.onload = function() {
-			window.addEventListener("message", getBusFn(options.verified), false);
+			window.addEventListener("message", getBusFn(ifrm, options.verified), false);
 		};
 		document.body.appendChild(container); // to place at end of document
 		container.appendChild(ifrm);
 
 		// assign url
-		ifrm.setAttribute('src', "http://dev.rebatebus.com/midstreamwidget?rebate=" + options.rebateid + "&product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid);
+		if (options.rebateid && options.zip && options.propertytype) {
+			ifrm.setAttribute('src', "http://dev.rebatebus.com/midstreamwidget?rebate=" + options.rebateid + "&zip=" + options.zip + "&product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid + "&propertytype=" + options.propertytype);
+		}
+		else {
+			ifrm.setAttribute('src', "http://dev.rebatebus.com/midstreamcheck?product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid);
+		}
 	}
 
 };
