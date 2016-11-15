@@ -158,7 +158,7 @@ var states = {
     "Quebec": "QC",
     "Prince Edward Island": "PE",
     "New Brunswick": "NB",
-    "Mantioba": "MB"
+    "Manitoba": "MB"
 
   }; 
 
@@ -871,7 +871,10 @@ var rebatemap = function(utilityDict, rebates, productid, id) {
 					maxRebate = rebates.prescriptive[i].rebateAmount;
 				}
 				for (j = 0; j < programStates[rebates.prescriptive[i].programid].length; j++) {
-					stateMatches[states[programStates[rebates.prescriptive[i].programid][j].trim()]].push(rebates.prescriptive[i]);		
+					if (!stateMatches[states[programStates[rebates.prescriptive[i].programid][j].trim()]]) {
+						alert('hi');	
+					}
+					stateMatches[states[programStates[rebates.prescriptive[i].programid][j].trim()]].push(rebates.prescriptive[i]);	
 				}
 			}
 			for (curAbbrv in abbrv_states) {

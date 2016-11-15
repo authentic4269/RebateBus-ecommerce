@@ -193,9 +193,9 @@ display:inline-block;
   border: 0;
   }
 .banner-info {
-    width: 30%;
+    width: 60%;
     position: absolute;
-    top: 13%;
+    top: 10%;
     right: 10%;
     text-align: center;
     z-index: 1;
@@ -204,14 +204,14 @@ display:inline-block;
 .banner-info h3{
 	color:#fff;
 	font-weight: 700;
-	font-size:2em;
+	font-size:1.5em;
 	text-transform: uppercase;
 	    z-index: 999;
 }
 .banner-info p{
 	color:#fff;
 	line-height: 1.5em;
-	font-size: 1.2em;
+	font-size: 1em;
 	width:70%;
 	margin:0 auto;
 	text-align: center;
@@ -1884,7 +1884,7 @@ label {
     font-size: 2.7em;
 }
 .banner-info p {
-    font-size: 1em;
+    font-size: 0.7em;
     width: 80%;
 }
 .ofr-pic-info h4 {
@@ -1910,11 +1910,11 @@ ul.nav-bottom li a {
 .top-nav {
     width: 59%;
 }
-.banner1,.banner2,.banner3 {
+.banner1,.banner2,.banner3, .banner4 {
     min-height: 420px;
 }
 .banner-info h3 {
-    font-size: 2.2em;
+    font-size: 1.2em;
 }
 .single-para h4 {
     font-size: 1.6em;
@@ -1937,7 +1937,7 @@ p.para {
 .top-nav {
     width: 58%;
 }
-.banner1, .banner2, .banner3 {
+.banner1, .banner2, .banner3, .banner4 {
     min-height: 385px;
 }
 .banner-info {
@@ -1971,7 +1971,7 @@ position: absolute;
     width: 56%;
 }
 .banner-info h3 {
-    font-size: 2em;
+    font-size: 1.2em;
 }
 .feature-grid {
     width: 22%;
@@ -2044,14 +2044,14 @@ position: absolute;
     width: 33%;
     float: left;
 }
-}
 @media (max-width: 800px){
 .top-nav {
     width: 49%;
 }
 .banner-info {
-    width: 75%;
-    left: 13%;
+    width: 50%;
+    right: 13%;
+    top: 15%;
 }
 .single-top {
     margin-right: 0em;
@@ -2125,7 +2125,7 @@ position: absolute;
     width: 50%;
 	margin-bottom:2em;
 }
-.banner1, .banner2, .banner3 {
+.banner1, .banner2, .banner3, .banner4 {
     min-height: 285px;
 }
 .b-animate button {
@@ -2298,7 +2298,7 @@ span.item_price {
     margin: 0 auto;
     float: none;
 }
-.banner1, .banner2, .banner3 {
+.banner1, .banner2, .banner3, .banner4 {
     min-height: 240px;
 }
 .viw {
@@ -2468,11 +2468,11 @@ input.item_add.items {
     font-size: 1em;
 }
 .banner-info {
-    width: 90%;
+    width: 60%;
     left: 6%;
 	top: 31%;
 }
-.banner1, .banner2, .banner3 {
+.banner1, .banner2, .banner3, .banner4 {
     min-height: 195px;
 }
 .callbacks_nav {

@@ -59,10 +59,10 @@ var MidstreamWidget = {
 
 		// assign url
 		if (options.rebateid && options.zip && options.propertytype) {
-			ifrm.setAttribute('src', "midstreamwidget?rebate=" + options.rebateid + "&zip=" + options.zip + "&product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid + "&propertytype=" + options.propertytype);
+			ifrm.setAttribute('src', "http://dev.rebatebus.com/midstreamwidget?rebate=" + options.rebateid + "&zip=" + options.zip + "&product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid + "&propertytype=" + options.propertytype);
 		}
 		else {
-			ifrm.setAttribute('src', "midstreamcheck?product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid);
+			ifrm.setAttribute('src', "http://dev.rebatebus.com/midstreamcheck?product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid);
 		}
 	}
 

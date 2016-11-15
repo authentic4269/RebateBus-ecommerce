@@ -13,8 +13,8 @@
 
 var API_KEY = "VmOJXmww6eBGT3XW";
 var PUB_API_KEY = "EUrkzJacyAeSnH5f";
-var initial_price = 15.99;
-var UID = 1;
+var initial_price = 2.99;
+var UID = 129;
 var bus = {
  downstream: {},
  midstream: {},
@@ -164,19 +164,25 @@ function showPosition(position) {
     "<br>Longitude: " + position.coords.longitude; 
 }
 
-window.onload = function() {
-	getUtilities();
+function doRebateApp() {
 	MidstreamWidget.configure({
 		"uid": UID,
 		"apikey": PUB_API_KEY,
 		"productid": TEST_PRODUCT_ID,
 		"rebateid": TEST_REBATE_ID,
-		"verified": function(code, amount, qty) {
-			$("#discount-label").val("Rebate Amount:");
-			$("#discount-value").val("$" + amount);
-			$("#final-price").val(initial_price - amount);
+		"verified": function(code, amountStr, qty) {
+			var amt = parseFloat(amountStr);
+			$("#discount-label").text("Rebate Amount:");
+			$("#discount-value").text("$" + amt.toFixed(2));
+			$("#final-price").text("$" + (initial_price - amt).toFixed(2));
+			$("#cpns-notif").hide();
+			$("#success-notif").show();
 		}
 	});	
-	$("#initial-price").val("$" + initial_price);
-	$("#final-price").val("$" + initial_price);
+	
+}
+
+window.onload = function() {
+	$("#final-price").text("$" + initial_price.toFixed(2));
+	$("#initial-price").text("$" + initial_price.toFixed(2));
 }
