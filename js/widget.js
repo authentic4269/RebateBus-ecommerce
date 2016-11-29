@@ -2,6 +2,7 @@
  * Rebate Bus client scripts - export MidstreamWidget object with configure function to set up the verification widget
 */
 
+var verified = 0;
 
 var initWidget = function(ctr, ifrm) {
 	ctr.setAttribute('id', 'busctr'); // assign an id
@@ -30,9 +31,13 @@ var getBusFn = function(ifrm, callback) {
 		if (event.data.type == "removebusfrm") {
 			closeMidstreamFrame();
 		} if (event.data.type == "foundrebate") {
-			ifrm.setAttribute('src', "midstreamwidget?rebate=" + event.data.rebate + "&zip=" + event.data.zip + "&product=" + event.data.product + "&apikey=" + event.data.apikey + "&uid=" + event.data.uid + "&propertytype=" + event.data.propertytype);
+			ifrm.setAttribute('src', "midstreamwidget?zip=" + event.data.zip + "&rebatepairs=" + event.data.rebatepairs + "&apikey=" + event.data.apikey + "&uid=" + event.data.uid + "&propertytype=" + event.data.propertytype + "&program=" + event.data.program);
 		} else if (event.data.type == "verified") {
-			callback(event.data.verification, event.data.amount, event.data.maxqty);	
+			if (!verified) {
+				callback(event.data.data);	
+				verified = 1;
+				setTimeout(function() { verified = 0; }, 5000); // don't process the event multiple times
+			}
 		}
 	}
 }
@@ -40,13 +45,19 @@ var getBusFn = function(ifrm, callback) {
 var MidstreamWidget = { 
 
 	"configure": function(options) {
-		if (!options.productid || !options.apikey || !options.uid) {
+		if (!options.products || !options.products.length || !options.apikey || !options.uid) {
 			alert("Missing parameters in MidstreamWidget request");
 			return;	
 		}
 		var ifrm = document.createElement('iframe');
 		var container = document.createElement('div');
 		var server = "https://www.rebatebus.com/";
+		var i;		
+		var prodStr = "[";
+		for (i = 0; i < options.products.length - 1; i++) {
+			prodStr = prodStr + options.products[i] + ",";
+		}
+		prodStr = prodStr + options.products[i] + "]";
 		initWidget(container, ifrm);	
 		if (options.server) {
 			server = options.server;	
@@ -57,12 +68,13 @@ var MidstreamWidget = {
 		document.body.appendChild(container); // to place at end of document
 		container.appendChild(ifrm);
 
-		// assign url
-		if (options.rebateid && options.zip && options.propertytype) {
-			ifrm.setAttribute('src', "http://dev.rebatebus.com/midstreamwidget?rebate=" + options.rebateid + "&zip=" + options.zip + "&product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid + "&propertytype=" + options.propertytype);
+		if (options.programid && options.zip && options.propertytype) {
+			ifrm.setAttribute('src', "midstreamwidget?program=" + options.rebateid + "&zip=" + options.zip + "&product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid + "&propertytype=" + options.propertytype);
 		}
 		else {
-			ifrm.setAttribute('src', "http://dev.rebatebus.com/midstreamcheck?product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid);
+		// usual configuration - figure that stuff out through the widget
+			
+			ifrm.setAttribute('src', "midstreamcheck?products=" + prodStr + "&apikey=" + options.apikey + "&uid=" + options.uid);
 		}
 	}
 
