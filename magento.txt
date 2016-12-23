@@ -1,0 +1,5 @@
+ProLighting Magento Integration
+
+Add Rebate Bus section to checkout template, design/frontend/base/default/template/onestepcheckout/checkout.phtml
+
+Add JS widget and frontend file to layout, js/lib/rebatebus/widget.js and js/lib/rebatebus/rebatebus.js 
