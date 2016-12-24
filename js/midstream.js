@@ -11,9 +11,10 @@
  * Mitch Vogel, 9/30/16
  */
 
-var API_KEY = "VmOJXmww6eBGT3XW";
-var PUB_API_KEY = "EUrkzJacyAeSnH5f";
-var initial_price = 2.99;
+var API_KEY = "nWWJuoELrC9LHqP1";
+var PUB_API_KEY = "MSKMCzp5edmCBeYx";
+var initial_price1 = 3.99;
+var initial_price2 = 111.99;
 var UID = 129;
 var bus = {
  downstream: {},
@@ -22,7 +23,9 @@ var bus = {
 };
 
 var TEST_REBATE_ID = 5401;
-var TEST_PRODUCT_ID = 1013;
+var TEST_PRODUCT_ID1 = 1013;
+var TEST_PRODUCT_ID2 = 1001;
+
 var MIDSTREAM_UID = 129;
 
 function getUtilities() {
@@ -164,25 +167,56 @@ function showPosition(position) {
     "<br>Longitude: " + position.coords.longitude; 
 }
 
+function applyMidstream(data) {
+        var requestobj = {};
+        requestobj.uid = UID;
+        requestobj.apikey = API_KEY;
+        requestobj.verification = data.verification;
+        requestobj.zip = data.zip; 
+        requestobj.contactname = "Jane Customer";
+        requestobj.contactphone = "5555555555";
+        requestobj.contactemail = "team@rebatebus.com";
+        requestobj.address = "2908 Brian Lane, Fitchburg, WI";
+        requestobj.quantity = 1;
+        /*$.ajax({
+                type: "POST", 
+                url: "http://dev.rebatebus.com/api/applymidstream",
+                data: requestobj,
+                complete: function(response, stat) {
+                        if (response.status == 200)
+                                alert('rebate applied!');
+                        else 
+                                alert('error applying midstream rebate');
+                }
+
+        });*/
+}
+
 function doRebateApp() {
 	MidstreamWidget.configure({
 		"uid": UID,
 		"apikey": PUB_API_KEY,
-		"productid": TEST_PRODUCT_ID,
-		"rebateid": TEST_REBATE_ID,
-		"verified": function(code, amountStr, qty) {
-			var amt = parseFloat(amountStr);
+		"products": [TEST_PRODUCT_ID1, TEST_PRODUCT_ID2],
+		"verified": function(data) {
+			
 			$("#discount-label").text("Rebate Amount:");
-			$("#discount-value").text("$" + amt.toFixed(2));
-			$("#final-price").text("$" + (initial_price - amt).toFixed(2));
+			var totalRebate = 0;
+			for (var datidx = 0; datidx < data.length; datidx++) {
+				totalRebate += parseFloat(data[datidx].amount);	
+				applyMidstream(data[datidx]);
+			}
+			
+			$("#discount-value").text("$" + totalRebate.toFixed(2));
+			$("#final-price").text("$" + ((initial_price1 + initial_price2) - totalRebate).toFixed(2));
 			$("#cpns-notif").hide();
 			$("#success-notif").show();
+			$("#success-programimg").attr("src", "https://www.rebatebus.com/assets/programimages/" + data[0].program + ".png");
 		}
 	});	
 	
 }
 
 window.onload = function() {
-	$("#final-price").text("$" + initial_price.toFixed(2));
-	$("#initial-price").text("$" + initial_price.toFixed(2));
+	$("#final-price").text("$" + (initial_price1 + initial_price2).toFixed(2));
+	$("#initial-price").text("$" + (initial_price1 + initial_price2).toFixed(2));
 }

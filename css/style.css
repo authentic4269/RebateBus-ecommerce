@@ -1230,6 +1230,10 @@ p.para {
     display: inline-block;
     color: #999;
 }
+#success-programimg {
+	width: 90%;
+	margin-top: 1em;
+}
 .navbar-form {
     padding: 0!important;
 }

@@ -15,7 +15,7 @@ var API_KEY = "nWWJuoELrC9LHqP1";
 var PUB_API_KEY = "MSKMCzp5edmCBeYx";
 var initial_price = 15.99;
 var server = "http://dev.rebatebus.com/"
-var UID = 1;
+var UID = 129;
 var bus = {
  downstream: {},
  midstream: {},
@@ -23,7 +23,8 @@ var bus = {
 };
 
 var TEST_REBATE_ID = 5401;
-var TEST_PRODUCT_ID = 1013;
+var TEST_PRODUCT_ID1 = 1013;
+var TEST_PRODUCT_ID2 = 1001;
 var MIDSTREAM_UID = 129;
 
 function getUtilities() {
@@ -46,7 +47,7 @@ function getRebates() {
         $.ajax({
                 type: "POST",
                 url: server + "api/getrebates",
-                data: {"uid": UID, "apikey": API_KEY},
+                data: {"uid": UID, "apikey": PUB_API_KEY},
 		crossDomain: true,
                 complete: function(response, stat) {
                         var rebates = JSON.parse(response.responseText);
@@ -148,10 +149,33 @@ function setProgramRebates(closestProgram) {
  * We've found a rebate that applies to productid in the program we're localizing to - update the DOM to reflect the discount
  */
 function updateRebatePriceQuotes(productid, incentive) {
-	$("#" + productid + " .pric1").append("<del>$" + incentive.msrp + "</del>");
-	$("#" + productid + " .pric2").text("$" + (incentive.msrp - incentive.rebateAmount).toFixed(2));
-	$("#" + productid + " .disc").text("$" + incentive.rebateAmount.toFixed(2) + " rebate from " + incentive.program);
+	var amount = parseFloat(incentive.rebateAmount); // widget delivers rebateAmount in a string
+	var pric = $("#" + productid + " .pric1");
+	var programimg = document.createElement("img");
+	programimg.src = "https://www.rebatebus.com/assets/programimages/" + incentive.program + ".png";
+	programimg.setAttribute("id", productid + "img");
+	pric.text("");
+	pric.append("<del>$" + incentive.msrp.toFixed(2) + "</del>");
+	$("#" + productid + " .pric2").text("$" + (incentive.msrp - amount).toFixed(2));
+	$("#" + productid + " .disc").text("$" + incentive.rebateAmount + " rebate from " + incentive.program);
+	$("#" + productid).append(programimg);
 }
+
+function clearRebatePriceQuotes() {
+	var i;
+	for (i = 0; i < products.length; i++) {
+		var pric2 = $("#" + products[i] + " .pric2");
+		var pric = $("#" + products[i] + " .pric1");
+		var disc = $("#" + products[i] + " .disc");
+		if ($("#" + products[i] + "img"))
+			$("#" + products[i] + "img").remove();
+		if (pric.text().length)
+			pric2.text(pric.text());
+		disc.text("");
+		pric.text("");
+	}
+}
+
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -166,7 +190,7 @@ function showPosition(position) {
 }
 
 window.onload = function() {
-	getUtilities();
+/*	getUtilities();
 	MidstreamWidget.configure({
 		"uid": UID,
 		"apikey": PUB_API_KEY,
@@ -178,6 +202,18 @@ window.onload = function() {
 			$("#final-price").val(initial_price - amount);
 		}
 	});	
-	$("#initial-price").val("$" + initial_price);
-	$("#final-price").val("$" + initial_price);
+*/
+	var myNode = document.getElementById("mytable");
+	while (myNode.lastChild) {
+	    myNode.removeChild(myNode.lastChild);
+	}
+	SearchWidget.configure({
+		"uid": UID,
+		"apikey": PUB_API_KEY,
+		"productid_list": products,
+		"showdownstream": true,
+		"callback": updateRebatePriceQuotes,
+		"clear": clearRebatePriceQuotes
+
+	});
 }

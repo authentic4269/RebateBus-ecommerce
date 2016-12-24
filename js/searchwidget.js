@@ -73,6 +73,7 @@ var createZipBar = function(zip, propertytype, options) {
 	bar.style['background-color'] = "#e4e4e4";	
 	bar.style['border-bottom-left-radius'] = "5px";
 	bar.style['border-bottom-left-radius'] = "5px";
+	bar.style['cursor'] = "pointer";
 	span.style['font-size'] = "large";
 	mapicon.className = "fa fa-map-marker";
 	pencilicon.className = "fa fa-pencil";
@@ -80,7 +81,7 @@ var createZipBar = function(zip, propertytype, options) {
 	span.appendChild(document.createTextNode(" Shipping Zip: " + zip + " ")); 
 	span.appendChild(pencilicon);
 	bar.appendChild(span);
-	pencilicon.addEventListener("click", 
+	bar.addEventListener("click", 
 		function() {
 			gotzipFlag = 0;
 			createWidget(options, propertytype, zip);
@@ -92,12 +93,12 @@ var createZipBar = function(zip, propertytype, options) {
 var createWidget = function(options, curtype, curzip) {
 	var ifrm = document.createElement('iframe');
 	var container = document.createElement('div');
-	var server = "https://www.rebatebus.com/";
 	initWidget(container, ifrm);	
+	var server = "http://dev.rebatebus.com/";
 	if (options.server) {
 		server = options.server;	
 	} else {
-		options.server = "https://www.rebatebus.com/";
+		options.server = "http://dev.rebatebus.com/";
 	}
 	ifrm.onload = function() {
 		window.addEventListener("message", getBusFn(options), false);
@@ -116,6 +117,7 @@ var createWidget = function(options, curtype, curzip) {
 var loadRebates = function(options, viewingtype, viewingzip) {
 	var bus = {};
 	var seen = {};
+	options.clear();
 	$.post(options.server + "api/getrebates", {"productid_list": options.productid_list,
 		"uid": options.uid,
 		"apikey": options.apikey,
@@ -182,6 +184,13 @@ var SearchWidget = {
 
 		var viewingzip = getCookie('busfrm-rebatezip');
 		var viewingtype = getCookie('busfrm-propertytype');
+		var server = "http://dev.rebatebus.com/";
+		if (options.server) {
+			server = options.server;	
+		} else {
+			options.server = "http://dev.rebatebus.com/";
+		}
+
 		if (viewingtype == "" || viewingzip == "") {
 			gotzipFlag = 0;
 			createWidget(options, null, null);

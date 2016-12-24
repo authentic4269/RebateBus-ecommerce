@@ -11,10 +11,10 @@
  * Mitch Vogel, 9/30/16
  */
 
-var API_KEY = "nWWJuoELrC9LHqP1";
-var PUB_API_KEY = "MSKMCzp5edmCBeYx";
-var initial_price = 15.99;
-var server = "http://dev.rebatebus.com/"
+var API_KEY = "VmOJXmww6eBGT3XW";
+var PUB_API_KEY = "EUrkzJacyAeSnH5f";
+var initial_price1 = 5.99;
+var initial_price2 = 111.99;
 var UID = 1;
 var bus = {
  downstream: {},
@@ -23,13 +23,14 @@ var bus = {
 };
 
 var TEST_REBATE_ID = 5401;
-var TEST_PRODUCT_ID = 1013;
+var TEST_PRODUCT_ID1 = 1013;
+var TEST_PRODUCT_ID2 = 1001;
 var MIDSTREAM_UID = 129;
 
 function getUtilities() {
 	$.ajax({
 		type: "POST",
-		url: server + "api/getutilities",
+		url: "https://www.rebatebus.com/api/getutilities",
 		data: {"uid": UID, "apikey": API_KEY},
 		crossDomain: true,
 		complete: function(response, stat) {
@@ -45,7 +46,7 @@ function getUtilities() {
 function getRebates() {
         $.ajax({
                 type: "POST",
-                url: server + "api/getrebates",
+                url: "https://www.rebatebus.com/api/getrebates",
                 data: {"uid": UID, "apikey": API_KEY},
 		crossDomain: true,
                 complete: function(response, stat) {
@@ -165,19 +166,23 @@ function showPosition(position) {
     "<br>Longitude: " + position.coords.longitude; 
 }
 
+
 window.onload = function() {
 	getUtilities();
 	MidstreamWidget.configure({
 		"uid": UID,
 		"apikey": PUB_API_KEY,
-		"productid": TEST_PRODUCT_ID,
-		"rebateid": TEST_REBATE_ID,
-		"verified": function(code, amount, qty) {
+		"products": [TEST_PRODUCT_ID1,TEST_PRODUCT_ID2],
+		"verified": function(data) {
 			$("#discount-label").val("Rebate Amount:");
-			$("#discount-value").val("$" + amount);
-			$("#final-price").val(initial_price - amount);
+			var totalRebate = 0;
+			for (var datidx = 0; datidx < data.length; datidx++) {
+				totalRebate += data[datidx].amount;	
+			}
+			$("#discount-value").val("$" + totalRebate);
+			$("#final-price").val((initial_price1 + initial_price2) - totalRebate);
 		}
 	});	
-	$("#initial-price").val("$" + initial_price);
-	$("#final-price").val("$" + initial_price);
+	$("#initial-price").val("$" + (initial_price1 + initial_price2));
+	$("#final-price").val("$" + (initial_price1 + initial_price2));
 }

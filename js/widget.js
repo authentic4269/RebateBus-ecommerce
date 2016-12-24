@@ -3,6 +3,7 @@
 */
 
 var verified = 0;
+var server;
 
 var initWidget = function(ctr, ifrm) {
 	ctr.setAttribute('id', 'busctr'); // assign an id
@@ -31,7 +32,7 @@ var getBusFn = function(ifrm, callback) {
 		if (event.data.type == "removebusfrm") {
 			closeMidstreamFrame();
 		} if (event.data.type == "foundrebate") {
-			ifrm.setAttribute('src', "midstreamwidget?zip=" + event.data.zip + "&rebatepairs=" + event.data.rebatepairs + "&apikey=" + event.data.apikey + "&uid=" + event.data.uid + "&propertytype=" + event.data.propertytype + "&program=" + event.data.program);
+			ifrm.setAttribute('src', server + "midstreamwidget?zip=" + event.data.zip + "&rebatepairs=" + event.data.rebatepairs + "&apikey=" + event.data.apikey + "&uid=" + event.data.uid + "&propertytype=" + event.data.propertytype + "&program=" + event.data.program);
 		} else if (event.data.type == "verified") {
 			if (!verified) {
 				callback(event.data.data);	
@@ -51,7 +52,7 @@ var MidstreamWidget = {
 		}
 		var ifrm = document.createElement('iframe');
 		var container = document.createElement('div');
-		var server = "https://www.rebatebus.com/";
+		server = "http://dev.rebatebus.com/";
 		var i;		
 		var prodStr = "[";
 		for (i = 0; i < options.products.length - 1; i++) {
@@ -69,12 +70,12 @@ var MidstreamWidget = {
 		container.appendChild(ifrm);
 
 		if (options.programid && options.zip && options.propertytype) {
-			ifrm.setAttribute('src', "midstreamwidget?program=" + options.rebateid + "&zip=" + options.zip + "&product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid + "&propertytype=" + options.propertytype);
+			ifrm.setAttribute('src', server + "midstreamwidget?program=" + options.rebateid + "&zip=" + options.zip + "&product=" + options.productid + "&apikey=" + options.apikey + "&uid=" + options.uid + "&propertytype=" + options.propertytype);
 		}
 		else {
 		// usual configuration - figure that stuff out through the widget
 			
-			ifrm.setAttribute('src', "midstreamcheck?products=" + prodStr + "&apikey=" + options.apikey + "&uid=" + options.uid);
+			ifrm.setAttribute('src', server + "midstreamcheck?products=" + prodStr + "&apikey=" + options.apikey + "&uid=" + options.uid);
 		}
 	}
 
