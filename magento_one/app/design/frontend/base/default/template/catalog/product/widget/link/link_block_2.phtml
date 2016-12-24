@@ -1,0 +1,20 @@
+<?php
+$_product = $this->getProduct();
+$_image = '';
+$_price = '$' . money_format('%n', $_product->getFinalPrice());
+
+if ($_product) {
+    $_image = Mage::helper('catalog/image')->init($_product, 'thumbnail')
+        ->keepAspectRatio(true)
+        ->keepFrame(true)
+        ->resize(115,115)
+        ->__toString();
+}
+?>
+<div class="item">
+    <a <?php echo $this->getLinkAttributes() ?>>
+        <img src="<?php echo $_image; ?>" alt="<?php echo $this->htmlEscape($this->getAnchorText()); ?>" style="border:0" />
+        <?php echo nl2br($this->htmlEscape($this->getAnchorText())); ?><br />
+        <b><?php echo $_price; ?></b>
+    </a>
+</div>
