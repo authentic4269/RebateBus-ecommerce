@@ -52,7 +52,7 @@ var MidstreamWidget = {
 		}
 		var ifrm = document.createElement('iframe');
 		var container = document.createElement('div');
-		server = "http://dev.rebatebus.com/";
+		server = "https://www.rebatebus-staging.herokuapp.com/";
 		var i;		
 		var prodStr = "[";
 		for (i = 0; i < options.products.length - 1; i++) {

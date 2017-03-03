@@ -94,11 +94,11 @@ var createWidget = function(options, curtype, curzip) {
 	var ifrm = document.createElement('iframe');
 	var container = document.createElement('div');
 	initWidget(container, ifrm);	
-	var server = "http://dev.rebatebus.com/";
+	var server = "https://www.rebatebus.com/";
 	if (options.server) {
 		server = options.server;	
 	} else {
-		options.server = "http://dev.rebatebus.com/";
+		options.server = "https://www.rebatebus.com/";
 	}
 	ifrm.onload = function() {
 		window.addEventListener("message", getBusFn(options), false);
@@ -184,11 +184,11 @@ var SearchWidget = {
 
 		var viewingzip = getCookie('busfrm-rebatezip');
 		var viewingtype = getCookie('busfrm-propertytype');
-		var server = "http://dev.rebatebus.com/";
+		var server = "https://www.rebatebus.com/";
 		if (options.server) {
 			server = options.server;	
 		} else {
-			options.server = "http://dev.rebatebus.com/";
+			options.server = "https://www.rebatebus.com/";
 		}
 
 		if (viewingtype == "" || viewingzip == "") {

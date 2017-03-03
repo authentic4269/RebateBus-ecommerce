@@ -11,11 +11,12 @@
  * Mitch Vogel, 9/30/16
  */
 
-var API_KEY = "nWWJuoELrC9LHqP1";
-var PUB_API_KEY = "MSKMCzp5edmCBeYx";
+var UID = 43;
+var PUB_API_KEY = "h9RcNj2GTA5R5ziP";
+var API_KEY = "iqG8e7tX4eQLner4";
+
 var initial_price = 15.99;
-var server = "http://dev.rebatebus.com/"
-var UID = 1;
+var server = "https://www.rebatebus.com/"
 var bus = {
  downstream: {},
  midstream: {},

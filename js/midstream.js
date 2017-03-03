@@ -11,11 +11,11 @@
  * Mitch Vogel, 9/30/16
  */
 
-var API_KEY = "nWWJuoELrC9LHqP1";
-var PUB_API_KEY = "MSKMCzp5edmCBeYx";
+var UID = 1;
+var PUB_API_KEY = "VhrTvdbbVVy1PLPW";
+
 var initial_price1 = 3.99;
 var initial_price2 = 111.99;
-var UID = 129;
 var bus = {
  downstream: {},
  midstream: {},
@@ -203,7 +203,6 @@ function doRebateApp() {
 			var totalRebate = 0;
 			for (var datidx = 0; datidx < data.length; datidx++) {
 				totalRebate += parseFloat(data[datidx].amount);	
-				applyMidstream(data[datidx]);
 			}
 			
 			$("#discount-value").text("$" + totalRebate.toFixed(2));
